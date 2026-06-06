@@ -1,0 +1,74 @@
+@model IEnumerable<ADHealthChecker.Models.HealthResult>
+
+<h2>Health Assessment</h2>
+
+<p>
+    <a asp-controller="Health" asp-action="RunAssessment" class="btn btn-primary">Run Assessment</a>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Home</a>
+</p>
+
+@{
+    var overall = ViewBag.OverallHealthScore as int? ?? -1;
+    string scoreClass = "";
+    if (overall >= 0)
+    {
+        if (overall >= 90) scoreClass = "bg-success text-white";
+        else if (overall >= 70) scoreClass = "bg-warning text-dark";
+        else scoreClass = "bg-danger text-white";
+    }
+}
+
+@if (overall >= 0)
+{
+    <div class="mb-3">
+        <div class="p-3 @scoreClass" style="width:150px;text-align:center;font-size:1.5rem;border-radius:6px;">@overall</div>
+        <div class="mt-2">Overall Health Score</div>
+    </div>
+}
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Check</th>
+                <th>Status</th>
+                <th>Score</th>
+                <th>Recommendation</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.CheckName</td>
+                <td>@r.Status</td>
+                <td>@r.Score</td>
+                <td>@r.Recommendation</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No results yet. Click "Run Assessment" to generate sample results.</p>
+}
+
+@* Optional: show raw outputs for debugging *@
+@if (ViewBag.DcdiagDnsOutput != null || ViewBag.RepadminOutput != null || ViewBag.DcdiagQOutput != null)
+{
+    <h4>Raw Command Output</h4>
+    <div class="mb-3">
+        <h5>dcdiag /test:dns</h5>
+        <pre>@(ViewBag.DcdiagDnsOutput ?? "(no output)")</pre>
+    </div>
+    <div class="mb-3">
+        <h5>repadmin /replsummary</h5>
+        <pre>@(ViewBag.RepadminOutput ?? "(no output)")</pre>
+    </div>
+    <div class="mb-3">
+        <h5>dcdiag /q</h5>
+        <pre>@(ViewBag.DcdiagQOutput ?? "(no output)")</pre>
+    </div>
+}
