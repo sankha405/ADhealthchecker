@@ -6,5 +6,6 @@ namespace ADHealthChecker.Models
         public string Status { get; set; } = "";
         public int Score { get; set; }
         public string Recommendation { get; set; } = "";
+        public string RawOutput { get; set; } = "";
     }
 }

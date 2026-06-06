@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ADHealthChecker")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+320b745baa7b7ae0b3b775928d7af343a25dd013")]
 [assembly: System.Reflection.AssemblyProductAttribute("ADHealthChecker")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ADHealthChecker")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

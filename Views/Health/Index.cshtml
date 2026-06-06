@@ -25,6 +25,14 @@
         <div class="mt-2">Overall Health Score</div>
     </div>
 }
+@{
+    var grade = ViewBag.OverallGrade as string ?? string.Empty;
+}
+
+@if (!string.IsNullOrEmpty(grade))
+{
+    <div class="mb-3">Grade: <strong>@grade</strong></div>
+}
 
 @if (Model != null && Model.Any())
 {
@@ -55,20 +63,24 @@ else
     <p>No results yet. Click "Run Assessment" to generate sample results.</p>
 }
 
-@* Optional: show raw outputs for debugging *@
-@if (ViewBag.DcdiagDnsOutput != null || ViewBag.RepadminOutput != null || ViewBag.DcdiagQOutput != null)
+@* Collapsible raw outputs per check *@
+@if (Model != null && Model.Any())
 {
+    var list = Model.ToList();
     <h4>Raw Command Output</h4>
-    <div class="mb-3">
-        <h5>dcdiag /test:dns</h5>
-        <pre>@(ViewBag.DcdiagDnsOutput ?? "(no output)")</pre>
-    </div>
-    <div class="mb-3">
-        <h5>repadmin /replsummary</h5>
-        <pre>@(ViewBag.RepadminOutput ?? "(no output)")</pre>
-    </div>
-    <div class="mb-3">
-        <h5>dcdiag /q</h5>
-        <pre>@(ViewBag.DcdiagQOutput ?? "(no output)")</pre>
-    </div>
+    @for (int i = 0; i < list.Count; i++)
+    {
+        var r = list[i];
+        <div class="mb-2">
+            <div class="d-flex justify-content-between align-items-center">
+                <div><strong>@r.CheckName</strong></div>
+                <div>
+                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#raw@i" aria-expanded="false" aria-controls="raw@i">Show Output</button>
+                </div>
+            </div>
+            <div class="collapse mt-2" id="raw@i">
+                <pre style="max-height:300px;overflow:auto;">@(string.IsNullOrEmpty(r.RawOutput) ? "(no output)" : r.RawOutput)</pre>
+            </div>
+        </div>
+    }
 }
